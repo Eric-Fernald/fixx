@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Repair Cafe Map - Find Local Repair Services",
+  title: "Fixx - Find Local Repair Services",
   description: "Discover local repair cafes and sustainable repair services in your area. Join the movement to reduce waste and build community connections.",
 };
 

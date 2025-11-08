@@ -1,10 +1,10 @@
-# Repair Cafe Map
+# Fixx
 
 A web application to help users discover local repair cafes and sustainable repair services in their area. Built with Next.js, Supabase, and MapBox.
 
 ## 🎯 Project Overview
 
-Repair Cafe Map is a mobile-responsive web application that allows users to:
+Fixx is a mobile-responsive web application that allows users to:
 - Search for nearby repair cafes and services
 - View detailed information about repair locations
 - Add new repair locations to the map
@@ -35,7 +35,7 @@ Repair Cafe Map is a mobile-responsive web application that allows users to:
 1. **Clone and install dependencies**:
    ```bash
    git clone <your-repo-url>
-   cd repair-cafe-map
+   cd fixx
    npm install
    ```
 
@@ -66,7 +66,7 @@ Repair Cafe Map is a mobile-responsive web application that allows users to:
 ## 📁 Project Structure
 
 ```
-repair-cafe-map/
+fixx/
 ├── app/                    # Next.js App Router pages
 │   ├── add/               # Add location page
 │   ├── location/[id]/     # Location detail page

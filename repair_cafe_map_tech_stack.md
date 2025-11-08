@@ -1,7 +1,7 @@
-# Repair Cafe Map - Tech Stack & Architecture
+# Fixx - Tech Stack & Architecture
 
 ## 🎯 Project Overview
-**Repair Cafe Map** is a mobile-responsive web application that helps users discover local repair cafes and repair services in their area. The platform allows users to search by location, view repair shop details, read reviews, and contribute new locations.
+**Fixx** is a mobile-responsive web application that helps users discover local repair cafes and repair services in their area. The platform allows users to search by location, view repair shop details, read reviews, and contribute new locations.
 
 ## 🛠 Technology Stack
 

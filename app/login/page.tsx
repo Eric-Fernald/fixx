@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface LoginForm {
   email: string
@@ -79,13 +83,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-muted/40 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">
+          <h2 className="text-3xl font-bold tracking-tight">
             {isLogin ? 'Sign in to your account' : 'Create your account'}
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-muted-foreground">
             {isLogin ? "Don't have an account? " : 'Already have an account? '}
             <button
               onClick={() => {
@@ -94,7 +98,7 @@ export default function LoginPage() {
                 loginForm.reset()
                 signUpForm.reset()
               }}
-              className="font-medium text-green-600 hover:text-green-500"
+              className="font-medium text-primary hover:underline"
             >
               {isLogin ? 'Sign up' : 'Sign in'}
             </button>
@@ -103,26 +107,27 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {message && (
-            <div className={`mb-4 p-3 rounded-md text-sm ${
-              message.includes('Check your email') 
-                ? 'bg-green-100 text-green-700' 
-                : 'bg-red-100 text-red-700'
-            }`}>
-              {message}
-            </div>
-          )}
+        <Card>
+          <CardHeader>
+            {message && (
+              <div className={`p-3 rounded-md text-sm ${
+                message.includes('Check your email') 
+                  ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-100' 
+                  : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-100'
+              }`}>
+                {message}
+              </div>
+            )}
+          </CardHeader>
+          <CardContent>
 
           {isLogin ? (
             <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email address
-                </label>
-                <div className="mt-1 relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
+              <div className="space-y-2">
+                <Label htmlFor="email">Email address</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
                     {...loginForm.register('email', { 
                       required: 'Email is required',
                       pattern: {
@@ -130,62 +135,60 @@ export default function LoginPage() {
                         message: 'Invalid email address'
                       }
                     })}
+                    id="email"
                     type="email"
-                    className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:ring-green-500 focus:border-green-500"
+                    className="pl-10"
                     placeholder="Enter your email"
                   />
                 </div>
                 {loginForm.formState.errors.email && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="text-sm text-destructive">
                     {loginForm.formState.errors.email.message}
                   </p>
                 )}
               </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <div className="mt-1 relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
                     {...loginForm.register('password', { required: 'Password is required' })}
+                    id="password"
                     type={showPassword ? 'text' : 'password'}
-                    className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:ring-green-500 focus:border-green-500"
+                    className="pl-10 pr-10"
                     placeholder="Enter your password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
                 {loginForm.formState.errors.password && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="text-sm text-destructive">
                     {loginForm.formState.errors.password.message}
                   </p>
                 )}
               </div>
 
-              <button
+              <Button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400"
+                className="w-full"
               >
                 {loading ? 'Signing in...' : 'Sign in'}
-              </button>
+              </Button>
             </form>
           ) : (
             <form onSubmit={signUpForm.handleSubmit(handleSignUp)} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email address
-                </label>
-                <div className="mt-1 relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
+              <div className="space-y-2">
+                <Label htmlFor="signup-email">Email address</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
                     {...signUpForm.register('email', { 
                       required: 'Email is required',
                       pattern: {
@@ -193,25 +196,24 @@ export default function LoginPage() {
                         message: 'Invalid email address'
                       }
                     })}
+                    id="signup-email"
                     type="email"
-                    className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:ring-green-500 focus:border-green-500"
+                    className="pl-10"
                     placeholder="Enter your email"
                   />
                 </div>
                 {signUpForm.formState.errors.email && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="text-sm text-destructive">
                     {signUpForm.formState.errors.email.message}
                   </p>
                 )}
               </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <div className="mt-1 relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
+              <div className="space-y-2">
+                <Label htmlFor="signup-password">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
                     {...signUpForm.register('password', { 
                       required: 'Password is required',
                       minLength: {
@@ -219,55 +221,56 @@ export default function LoginPage() {
                         message: 'Password must be at least 6 characters'
                       }
                     })}
+                    id="signup-password"
                     type={showPassword ? 'text' : 'password'}
-                    className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:ring-green-500 focus:border-green-500"
+                    className="pl-10 pr-10"
                     placeholder="Create a password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
                 {signUpForm.formState.errors.password && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="text-sm text-destructive">
                     {signUpForm.formState.errors.password.message}
                   </p>
                 )}
               </div>
 
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                  Confirm Password
-                </label>
-                <div className="mt-1 relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
                     {...signUpForm.register('confirmPassword', { required: 'Please confirm your password' })}
+                    id="confirmPassword"
                     type={showPassword ? 'text' : 'password'}
-                    className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:ring-green-500 focus:border-green-500"
+                    className="pl-10"
                     placeholder="Confirm your password"
                   />
                 </div>
                 {signUpForm.formState.errors.confirmPassword && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="text-sm text-destructive">
                     {signUpForm.formState.errors.confirmPassword.message}
                   </p>
                 )}
               </div>
 
-              <button
+              <Button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400"
+                className="w-full"
               >
                 {loading ? 'Creating account...' : 'Create account'}
-              </button>
+              </Button>
             </form>
           )}
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

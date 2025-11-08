@@ -5,6 +5,9 @@ import { Search, MapPin, Filter } from 'lucide-react'
 import LocationCard from '@/components/LocationCard'
 import { supabase } from '@/lib/supabase'
 import type { Database } from '@/lib/supabase'
+import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Card, CardContent } from '@/components/ui/card'
 
 type RepairLocation = Database['public']['Tables']['repair_locations']['Row']
 
@@ -66,39 +69,40 @@ export default function SearchPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="border-b bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Find Repair Services</h1>
+          <h1 className="text-3xl font-bold mb-4">Find Repair Services</h1>
           
           {/* Search and Filters */}
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search Input */}
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
                 type="text"
                 placeholder="Search by name, location, or service..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="pl-10"
               />
             </div>
 
             {/* Type Filter */}
             <div className="flex items-center space-x-2">
-              <Filter className="h-5 w-5 text-gray-400" />
-              <select
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              >
-                <option value="all">All Types</option>
-                <option value="repair_cafe">Repair Cafes</option>
-                <option value="commercial_shop">Commercial Shops</option>
-                <option value="mobile_service">Mobile Services</option>
-              </select>
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <Select value={selectedType} onValueChange={setSelectedType}>
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Filter by type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="repair_cafe">Repair Cafes</SelectItem>
+                  <SelectItem value="commercial_shop">Commercial Shops</SelectItem>
+                  <SelectItem value="mobile_service">Mobile Services</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
@@ -108,14 +112,14 @@ export default function SearchPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading repair locations...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-muted-foreground">Loading repair locations...</p>
           </div>
         ) : (
           <>
             {/* Results Count */}
             <div className="mb-6">
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 {filteredLocations.length} repair {filteredLocations.length === 1 ? 'location' : 'locations'} found
               </p>
             </div>
@@ -128,22 +132,24 @@ export default function SearchPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No locations found</h3>
-                <p className="text-gray-600 mb-4">
-                  Try adjusting your search terms or filters.
-                </p>
-                <button
-                  onClick={() => {
-                    setSearchTerm('')
-                    setSelectedType('all')
-                  }}
-                  className="text-green-600 hover:text-green-700 font-medium"
-                >
-                  Clear filters
-                </button>
-              </div>
+              <Card>
+                <CardContent className="text-center py-12">
+                  <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">No locations found</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Try adjusting your search terms or filters.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchTerm('')
+                      setSelectedType('all')
+                    }}
+                    className="text-primary hover:underline font-medium"
+                  >
+                    Clear filters
+                  </button>
+                </CardContent>
+              </Card>
             )}
           </>
         )}

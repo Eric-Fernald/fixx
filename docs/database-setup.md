@@ -1,6 +1,6 @@
 # Database Setup Instructions
 
-This document contains the SQL scripts needed to set up your Supabase database for the Repair Cafe Map application.
+This document contains the SQL scripts needed to set up your Supabase database for the Fixx application.
 
 ## Prerequisites
 

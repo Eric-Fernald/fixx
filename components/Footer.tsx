@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <MapPin className="h-8 w-8 text-green-400" />
-              <span className="text-xl font-bold">Repair Cafe Map</span>
+              <span className="text-xl font-bold">Fixx</span>
             </div>
             <p className="text-gray-400 mb-4">
               Discover local repair cafes and sustainable repair services in your area. 
@@ -80,7 +80,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2025 Repair Cafe Map. Open source project for the community.
+            © 2025 Fixx. Open source project for the community.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">

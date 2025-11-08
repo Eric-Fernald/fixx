@@ -1,4 +1,4 @@
-# Repair Cafe Map - Getting Started Guide
+# Fixx - Getting Started Guide
 
 ## 🎯 Phase 1: Environment Setup (Day 1)
 
@@ -12,8 +12,8 @@
 ```bash
 # Install Node.js (18+) and npm
 # Create project directory
-mkdir repair-cafe-map
-cd repair-cafe-map
+mkdir fixx
+cd fixx
 
 # Initialize Next.js project with TypeScript
 npx create-next-app@latest . --typescript --tailwind --eslint --app

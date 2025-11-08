@@ -1,6 +1,9 @@
 import Link from 'next/link'
-import { MapPin, Star, Clock, Phone, Globe } from 'lucide-react'
-import { Database } from '@/lib/supabase'
+import { MapPin, Phone, Globe, Star } from 'lucide-react'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import type { Database } from '@/lib/supabase'
 
 type RepairLocation = Database['public']['Tables']['repair_locations']['Row']
 
@@ -23,111 +26,102 @@ export default function LocationCard({ location, distance }: LocationCardProps) 
     }
   }
 
-  const getLocationTypeColor = (type: string) => {
+  const getLocationTypeVariant = (type: string): "default" | "secondary" | "outline" => {
     switch (type) {
       case 'repair_cafe':
-        return 'bg-green-100 text-green-800'
+        return 'default'
       case 'commercial_shop':
-        return 'bg-blue-100 text-blue-800'
+        return 'secondary'
       case 'mobile_service':
-        return 'bg-purple-100 text-purple-800'
+        return 'outline'
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'default'
     }
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-      <div className="p-6">
-        {/* Header */}
-        <div className="flex justify-between items-start mb-3">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              <Link 
-                href={`/location/${location.id}`}
-                className="hover:text-green-600 transition-colors"
-              >
-                {location.name}
-              </Link>
-            </h3>
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getLocationTypeColor(location.location_type)}`}>
+    <Card className="flex flex-col h-full hover:shadow-lg transition-shadow">
+      <CardHeader>
+        <div className="flex justify-between items-start gap-2">
+          <CardTitle className="text-xl">
+            <Link href={`/location/${location.id}`} className="hover:text-primary transition-colors">
+              {location.name}
+            </Link>
+          </CardTitle>
+          <div className="flex flex-col items-end gap-1">
+            <Badge variant={getLocationTypeVariant(location.location_type)}>
               {getLocationTypeLabel(location.location_type)}
-            </span>
+            </Badge>
+            {distance && (
+              <span className="text-sm text-muted-foreground font-medium">
+                {distance.toFixed(1)} km
+              </span>
+            )}
           </div>
-          {distance && (
-            <span className="text-sm text-gray-500 font-medium">
-              {distance.toFixed(1)} km
-            </span>
-          )}
         </div>
-
-        {/* Description */}
         {location.description && (
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+          <CardDescription className="line-clamp-2">
             {location.description}
-          </p>
+          </CardDescription>
         )}
+      </CardHeader>
 
-        {/* Address */}
-        <div className="flex items-center text-gray-600 text-sm mb-3">
-          <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-          <span>{location.address}</span>
+      <CardContent className="flex-1 space-y-3">
+        <div className="flex items-start space-x-2 text-sm">
+          <MapPin className="h-4 w-4 mt-0.5 text-muted-foreground flex-shrink-0" />
+          <span className="text-muted-foreground">{location.address}</span>
         </div>
 
-        {/* Services */}
+        {location.phone && (
+          <div className="flex items-center space-x-2 text-sm">
+            <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            <a href={`tel:${location.phone}`} className="text-muted-foreground hover:text-primary">
+              {location.phone}
+            </a>
+          </div>
+        )}
+
+        {location.website && (
+          <div className="flex items-center space-x-2 text-sm">
+            <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            <a 
+              href={location.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-primary truncate"
+            >
+              Visit Website
+            </a>
+          </div>
+        )}
+
         {location.services && location.services.length > 0 && (
-          <div className="mb-3">
-            <div className="flex flex-wrap gap-1">
-              {location.services.slice(0, 3).map((service, index) => (
-                <span 
-                  key={index}
-                  className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800"
-                >
-                  {service}
-                </span>
-              ))}
-              {location.services.length > 3 && (
-                <span className="text-xs text-gray-500">
-                  +{location.services.length - 3} more
-                </span>
-              )}
-            </div>
+          <div className="flex flex-wrap gap-1 pt-2">
+            {location.services.slice(0, 3).map((service, index) => (
+              <Badge key={index} variant="outline" className="text-xs">
+                {service}
+              </Badge>
+            ))}
+            {location.services.length > 3 && (
+              <Badge variant="outline" className="text-xs">
+                +{location.services.length - 3} more
+              </Badge>
+            )}
           </div>
         )}
 
-        {/* Contact Info */}
-        <div className="flex items-center justify-between">
-          <div className="flex space-x-4">
-            {location.phone && (
-              <a 
-                href={`tel:${location.phone}`}
-                className="flex items-center text-gray-600 hover:text-green-600 text-sm transition-colors"
-              >
-                <Phone className="h-4 w-4 mr-1" />
-                <span className="sr-only">Phone</span>
-              </a>
-            )}
-            {location.website && (
-              <a 
-                href={location.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-gray-600 hover:text-green-600 text-sm transition-colors"
-              >
-                <Globe className="h-4 w-4 mr-1" />
-                <span className="sr-only">Website</span>
-              </a>
-            )}
-          </div>
-
-          {/* Rating placeholder */}
-          <div className="flex items-center space-x-1">
-            <Star className="h-4 w-4 text-yellow-400 fill-current" />
-            <span className="text-sm text-gray-600">4.5</span>
-            <span className="text-sm text-gray-400">(12)</span>
-          </div>
+        <div className="flex items-center space-x-1 pt-2">
+          <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+          <span className="text-sm font-medium">4.5</span>
+          <span className="text-sm text-muted-foreground">(12 reviews)</span>
         </div>
-      </div>
-    </div>
+      </CardContent>
+
+      <CardFooter className="pt-4">
+        <Button asChild className="w-full">
+          <Link href={`/location/${location.id}`}>View Details</Link>
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }
